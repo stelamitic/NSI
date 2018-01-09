@@ -22,7 +22,6 @@
         <!-- script
     ================================================== -->
         <script src="scripts/modernizr.js"></script>
-        <script src="scripts/script.js"></script>
 
         <title>NSICordova</title>
     </head>
@@ -254,6 +253,9 @@
         <p class="event received">Device is Ready</p>-->
             </div>
         </div>
+      
+        <!-- The 'async' attribute is needed for RequireJS to work in a Windows app -->
+        <script type="text/javascript" data-main="scripts/startup" src="lib/require.2.1.8.js" async></script>
         <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="scripts/application.js"></script>
         <script src="scripts/jquery-1.11.3.min.js"></script>
@@ -261,8 +263,7 @@
         <script src="scripts/handlebars-v4.0.5.js"></script>
         <script src="scripts/cookie.js"></script>
         <script src="scripts/plugins.js"></script>
+        <script src="scripts/script.js"></script>
         <script src="scripts/main.js"></script>
-        <!-- The 'async' attribute is needed for RequireJS to work in a Windows app -->
-        <script type="text/javascript" data-main="scripts/startup" src="lib/require.2.1.8.js" async></script>
     </body>
 </html>

@@ -106,80 +106,7 @@ var refreshTagsId;
             $.magnificPopup.close();
         }
 
-        function logIn()
-        {
-            var username = $("#loginForm input[name='username']").val();
-            var password = $("#loginForm input[name='password']").val();
-
-            if (username == "" || password == "") {
-                alert("You must fill all field!");
-                return;
-            }
-
-            if (storage.getItem(username) == null)
-                alert("Invalid username or password.");
-            else {
-                var message = "Successfully logged in.";
-                var title = "Info";
-                var buttonName = "OK";
-                navigator.notification.alert(message, alertCallback, title, buttonName);
-                function alertCallback() {
-                    console.log("Alert is Dismissed!");
-                    transition();
-                }
-                function transition()
-                {
-                    var duration = 0.5, // animation time in seconds
-                        direction = "right"; // animation direction - left | right | top | bottom
-                    nativetransitions.flip(duration, direction, onComplete);
-                    function onComplete() {
-                        console.log("completed.");
-                    }
-                }
-                $.magnificPopup.close();
-                $("#loginForm input[name='username']").val("");
-                $("#loginForm input[name='password']").val("");
-                Cookies.set('user', username);
-                $("a[href='#loginForm']").removeClass("popup-with-form")
-                    .addClass("logoutClass")
-                    .html("Logout").attr("href", "#");
-                       
-            }
-            
-        }
-
-
-
-        function logout(el) {
-
-            //$("#orderBtn").css('display', 'none');
-            //$("#renderOrders").html("");
-
-            //if (user.admin) {
-            //    $("#renderUsers").html("");
-            //    $("#renderCoffees").html("");
-            //    $('a[href="#addCoffeeForm"]').hide();
-            //    $('a[href="#addExtraForm"]').hide();
-
-            //    $("a[href='#users']").css("display", 'none');
-            //}
-
-            //$("a[href='#editProfileForm']").css("display", 'none');
-            user = null;
-            Cookies.set('user', user);
-
-            //coffeesList(tags);
-            //extrasList();
-            //clearInterval(refreshCoffeesId);
-            //clearInterval(refreshExtrasId);
-            alert("You are logged out.");
-            $.magnificPopup.close();
-
-            $(el).html("Login").attr("href", "#loginForm")
-                .addClass("popup-with-form")
-                .removeClass("logoutClass");
-
-        }
+       
 
         $("#editProfileBtn").click(function () {
 
@@ -795,6 +722,79 @@ var refreshTagsId;
                 });
         }
     };
+
+    function logIn() {
+        var username = $("#loginForm input[name='username']").val();
+        var password = $("#loginForm input[name='password']").val();
+
+        if (username == "" || password == "") {
+            alert("You must fill all field!");
+            return;
+        }
+
+        if (storage.getItem(username) == null)
+            alert("Invalid username or password.");
+        else {
+            var message = "Successfully logged in.";
+            var title = "Info";
+            var buttonName = "OK";
+            navigator.notification.alert(message, alertCallback, title, buttonName);
+            function alertCallback() {
+                console.log("Alert is Dismissed!");
+                transition();
+            }
+            function transition() {
+                var duration = 0.5, // animation time in seconds
+                    direction = "right"; // animation direction - left | right | top | bottom
+                nativetransitions.flip(duration, direction, onComplete);
+                function onComplete() {
+                    console.log("completed.");
+                }
+            }
+            $.magnificPopup.close();
+            $("#loginForm input[name='username']").val("");
+            $("#loginForm input[name='password']").val("");
+            Cookies.set('user', username);
+            $("a[href='#loginForm']").removeClass("popup-with-form")
+                .addClass("logoutClass")
+                .html("Logout").attr("href", "#");
+
+        }
+
+    }
+
+
+
+    function logout(el) {
+
+        //$("#orderBtn").css('display', 'none');
+        //$("#renderOrders").html("");
+
+        //if (user.admin) {
+        //    $("#renderUsers").html("");
+        //    $("#renderCoffees").html("");
+        //    $('a[href="#addCoffeeForm"]').hide();
+        //    $('a[href="#addExtraForm"]').hide();
+
+        //    $("a[href='#users']").css("display", 'none');
+        //}
+
+        //$("a[href='#editProfileForm']").css("display", 'none');
+        user = null;
+        Cookies.set('user', user);
+
+        //coffeesList(tags);
+        //extrasList();
+        //clearInterval(refreshCoffeesId);
+        //clearInterval(refreshExtrasId);
+        alert("You are logged out.");
+        $.magnificPopup.close();
+
+        $(el).html("Login").attr("href", "#loginForm")
+            .addClass("popup-with-form")
+            .removeClass("logoutClass");
+
+    }
 
     function onPause() {
         // TODO: This application has been suspended. Save application state here.
