@@ -1,7 +1,17 @@
 {
-    "name": "NSICordova",
-    "version": "1.0.0",
-    "private": true,
-    "dependencies": {
+  "name": "NSICordova",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "com.telerik.plugins.nativepagetransitions": "git+https://github.com/Telerik-Verified-Plugins/NativePageTransitions.git",
+    "cordova-plugin-dialogs": "^2.0.1",
+    "cordova-plugin-native-transitions": "^0.2.3"
+  },
+  "cordova": {
+    "plugins": {
+      "cordova-plugin-dialogs": {},
+      "cordova-plugin-native-transitions": {},
+      "com.telerik.plugins.nativepagetransitions": {}
     }
+  }
 }

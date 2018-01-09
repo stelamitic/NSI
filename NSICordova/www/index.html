@@ -12,17 +12,256 @@
         <meta name="msapplication-tap-highlight" content="no">
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
         <link rel="stylesheet" type="text/css" href="css/index.css">
+        <!-- CSS
+    ================================================== -->
+        <link rel="stylesheet" href="css/bootstrap.css">
+        <link rel="stylesheet" href="css/css/base.css">
+        <link rel="stylesheet" href="css/css/main.css">
+        <link rel="stylesheet" href="css/css/vendor.css">
+
+        <!-- script
+    ================================================== -->
+        <script src="scripts/modernizr.js"></script>
+        <script src="scripts/script.js"></script>
+
         <title>NSICordova</title>
     </head>
     <body>
         <div class="app">
-            <h1>Apache Cordova</h1>
-            <div id="deviceready" class="blink">
-                <p class="event listening">Connecting to Device</p>
-                <p class="event received">Device is Ready</p>
+            <div id="deviceready">
+                <!-- header
+    ================================================== -->
+                <header>
+
+                    <div class="row">
+
+                        <div class="logo">
+                            <a>Coffee Shop</a>
+                        </div>
+
+                        <nav id="main-nav-wrap">
+                            <ul class="main-navigation">
+                                <li><a class="smoothscroll" href="#home" title="">Home</a></li>
+                                <li><a class="smoothscroll" href="#coffees" title="">Coffees</a></li>
+                                <li><a class="smoothscroll" href="#extras" title="">Extras</a></li>
+                                <li><a class="smoothscroll" href="#orders" title="">Orders</a></li>
+                                <li><a class="smoothscroll popup-with-form" role="button" href="#editProfileForm" style="display:none;" title="">Profile</a></li>
+                                <li><a class="smoothscroll" role="button" href="#users" style="display:none;" title="">Users</a></li>
+                                <li><a class="smoothscroll popup-with-form" href="#loginForm" title="">Login</a></li>
+                                <li class="highlight with-sep"><a href="#signUpForm" class="popup-with-form" title="">Sign Up</a></li>
+                            </ul>
+                        </nav>
+
+                        <a class="menu-toggle" href="#"><span>Menu</span></a>
+
+                    </div>
+
+                </header> <!-- /header -->
+                <!-- intro section
+    ================================================== -->
+                <!-- Modal Popup
+    ========================================================= -->
+                <div>
+                    <form id="signUpForm" class="popup-modal mfp-hide">
+                        <h1>User details:</h1>
+                        <ul>
+                            <li>
+                                <label for="username">Username</label>
+                                <input id="username" name="username" type="text" placeholder="Username" required="">
+                            </li>
+                            <li>
+                                <label for="password">Password:</label>
+                                <input id="password" name="password" type="password" placeholder="Password" required="">
+                            </li>
+                            <li>
+                                <label for="email">Email</label>
+                                <input id="email" name="email" type="email" placeholder="example@domain.com" required="">
+                            </li>
+                            <li>
+                                <button id="signUpBtn" type="button">Sign up</button>
+                            </li>
+                        </ul>
+                    </form>
+                </div> <!--Sign up-->
+
+                <div>
+                    <form id="loginForm" class="popup-modal mfp-hide">
+                        <h1>User details:</h1>
+                        <ul>
+                            <li>
+                                <label for="username">Username</label>
+                                <input name="username" type="text" placeholder="Username" required="">
+                            </li>
+                            <li>
+                                <label for="password">Password:</label>
+                                <input name="password" type="password" placeholder="Password" required="">
+                            </li>
+                            <li>
+                                <button id="loginBtn" type="button">Login</button>
+                            </li>
+                        </ul>
+                    </form>
+                </div> <!--Log in-->
+
+                <div>
+                    <form id="editProfileForm" class="popup-modal mfp-hide">
+                        <h1>User details:</h1>
+                        <ul>
+                            <li>
+                                <label for="username">Username</label>
+                                <input id="username" name="username" type="text" readonly="readonly" placeholder="Username" required="">
+                            </li>
+                            <li>
+                                <label for="password">Password:</label>
+                                <input id="password" name="password" type="password" placeholder="Password" required="">
+                            </li>
+                            <li>
+                                <label for="fullName">Full name:</label>
+                                <input id="fullName" name="fullName" type="text" placeholder="Full name" required="">
+                            </li>
+                            <li>
+                                <label for="email">Email</label>
+                                <input id="email" name="email" type="email" placeholder="example@domain.com" required="">
+                            </li>
+                            <li>
+                                <button id="editProfileBtn" type="button">Save changes</button>
+                            </li>
+                        </ul>
+                    </form>
+                </div> <!--Edit profile-->
+
+                <div>
+                    <form id="addCoffeeForm" class="popup-modal mfp-hide">
+                        <h1>Coffee details:</h1>
+                        <ul>
+                            <li>
+                                <label for="image">Image: </label>
+                                <input class="image coffee" name="image" type="file" placeholder="Upload image" required="" accept="image/*">
+                                <input id="imageName" name="imageName" type="text" placeholder="Image name" disabled="disabled">
+
+                            </li>
+                            <li>
+                                <label for="type">Type: </label>
+                                <input id="type" name="type" type="text" placeholder="Type" required="">
+                            </li>
+                        </ul>
+                        <h2> Pricing: </h2>
+                        <ul>
+                            <li>
+                                <label for="small">Small: </label>
+                                <input id="small" name="small" type="text" placeholder="Small" required="">
+                            </li>
+                            <li>
+                                <label for="medium">Medium: </label>
+                                <input id="medium" name="medium" type="text" placeholder="Medium" required="">
+                            </li>
+                            <li>
+                                <label for="large">Large: </label>
+                                <input id="large" name="large" type="text" placeholder="Large" required="">
+                            </li>
+                        </ul>
+                        <button id="addCoffeeBtn" type="button">Add coffee</button>
+                    </form>
+                </div> <!--Add coffee-->
+
+                <div>
+                    <form id="addExtraForm" class="popup-modal mfp-hide">
+                        <h1>Extra details:</h1>
+                        <ul>
+                            <li>
+                                <label for="image">Image: </label>
+                                <input class="image extra" name="image" type="file" placeholder="Upload image" required="" accept="image/*">
+                                <input name="imageName" type="text" placeholder="Image name" disabled="disabled">
+
+                            </li>
+                            <li>
+                                <label for="type">Type: </label>
+                                <input name="type" type="text" placeholder="Type" required="">
+                            </li>
+                            <li>
+                                <label for="">Price: </label>
+                                <input name="price" type="text" placeholder="Price" required="">
+                            </li>
+                        </ul>
+                        <button id="addExtraBtn" type="button">Add extra</button>
+                    </form>
+                </div> <!--Add extra-->
+                <!-- Process Section
+    ================================================== -->
+                <section id="home">
+                    <div class="intro-content" style="color:white">
+                        <div class="row section-intro">
+                            <div class="col-twelve with-bottom-line">
+                                <h1>How it works?</h1>
+                                <p class="lead">How it works?</p>
+
+                            </div>
+                        </div>
+
+                        <div class="row process-content">
+
+                            <div class="left-side">
+
+                                <div class="item" data-item="1">
+
+                                    <h5>Sign Up</h5>
+
+                                    <p>Create your account.</p>
+
+                                </div>
+
+                                <div class="item" data-item="2">
+
+                                    <h5>Coffee</h5>
+
+                                    <p>Choose your favourite coffee.</p>
+
+                                </div>
+
+                            </div> <!-- /left-side -->
+
+                            <div class="right-side">
+
+                                <div class="item" data-item="3">
+
+                                    <h5>Extras</h5>
+
+                                    <p>Add some extras.</p>
+                                </div>
+
+                                <div class="item" data-item="4">
+
+                                    <h5>Order</h5>
+
+                                    <p>Your coffee is ready to go!</p>
+
+                                </div>
+
+                            </div> <!-- /right-side -->
+
+                        </div> <!-- /process-content -->
+                    </div>
+                </section> <!-- /process-->
+                <!-- features Section
+    ================================================== -->
+                
+                <!-- Java Script
+    ================================================== -->
+            
+
+
+                    <!--<p class="event listening">Connecting to Device</p>
+        <p class="event received">Device is Ready</p>-->
             </div>
         </div>
         <script type="text/javascript" src="cordova.js"></script>
+        <script type="text/javascript" src="scripts/application.js"></script>
+        <script src="scripts/jquery-1.11.3.min.js"></script>
+        <script src="scripts/jquery-migrate-1.2.1.min.js"></script>
+        <script src="scripts/handlebars-v4.0.5.js"></script>
+        <script src="scripts/cookie.js"></script>
+        <script src="scripts/plugins.js"></script>
+        <script src="scripts/main.js"></script>
         <!-- The 'async' attribute is needed for RequireJS to work in a Windows app -->
         <script type="text/javascript" data-main="scripts/startup" src="lib/require.2.1.8.js" async></script>
     </body>

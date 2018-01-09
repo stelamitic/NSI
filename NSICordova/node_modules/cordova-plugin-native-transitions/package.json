@@ -1,0 +1,105 @@
+{
+  "_args": [
+    [
+      {
+        "raw": "cordova-plugin-native-transitions",
+        "scope": null,
+        "escapedName": "cordova-plugin-native-transitions",
+        "name": "cordova-plugin-native-transitions",
+        "rawSpec": "",
+        "spec": "latest",
+        "type": "tag"
+      },
+      "D:\\Visual Studio 2017 projekti\\NSICordova\\NSICordova"
+    ]
+  ],
+  "_from": "cordova-plugin-native-transitions@latest",
+  "_id": "cordova-plugin-native-transitions@0.2.3",
+  "_inCache": true,
+  "_location": "/cordova-plugin-native-transitions",
+  "_nodeVersion": "0.12.0",
+  "_npmUser": {
+    "name": "leecrossley",
+    "email": "leee@hotmail.co.uk"
+  },
+  "_npmVersion": "2.5.1",
+  "_phantomChildren": {},
+  "_requested": {
+    "raw": "cordova-plugin-native-transitions",
+    "scope": null,
+    "escapedName": "cordova-plugin-native-transitions",
+    "name": "cordova-plugin-native-transitions",
+    "rawSpec": "",
+    "spec": "latest",
+    "type": "tag"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/cordova-plugin-native-transitions/-/cordova-plugin-native-transitions-0.2.3.tgz",
+  "_shasum": "ad9403bb9e9f7355345d1623826ade6f50a31eaf",
+  "_shrinkwrap": null,
+  "_spec": "cordova-plugin-native-transitions",
+  "_where": "D:\\Visual Studio 2017 projekti\\NSICordova\\NSICordova",
+  "author": {
+    "name": "Lee Crossley",
+    "email": "leee@hotmail.co.uk",
+    "url": "http://ilee.co.uk/"
+  },
+  "bugs": {
+    "url": "https://github.com/leecrossley/cordova-plugin-native-transitions/issues"
+  },
+  "cordova": {
+    "id": "cordova-plugin-native-transitions",
+    "platforms": [
+      "ios"
+    ]
+  },
+  "dependencies": {},
+  "description": "Cordova / PhoneGap Plugin for native transitions. Emulating transitions are a thing of the past, you can now use real native transitions directly from your JavaScript! Supports flip, curl and fade.",
+  "devDependencies": {},
+  "directories": {},
+  "dist": {
+    "shasum": "ad9403bb9e9f7355345d1623826ade6f50a31eaf",
+    "tarball": "https://registry.npmjs.org/cordova-plugin-native-transitions/-/cordova-plugin-native-transitions-0.2.3.tgz"
+  },
+  "engines": [
+    {
+      "name": "cordova",
+      "version": ">=3.0.0"
+    }
+  ],
+  "gitHead": "c58789d14e715067218b3dd362c5f29d715ca0ec",
+  "homepage": "https://github.com/leecrossley/cordova-plugin-native-transitions#readme",
+  "keywords": [
+    "cordova",
+    "transition",
+    "transitions",
+    "page",
+    "animate",
+    "animation",
+    "flip",
+    "curl",
+    "fade",
+    "ecosystem:cordova",
+    "cordova-ios"
+  ],
+  "license": "MIT",
+  "maintainers": [
+    {
+      "name": "leecrossley",
+      "email": "leee@hotmail.co.uk"
+    }
+  ],
+  "name": "cordova-plugin-native-transitions",
+  "optionalDependencies": {},
+  "readme": "## Native Transitions Plugin for Apache Cordova [![npm version](https://badge.fury.io/js/cordova-plugin-native-transitions.svg)](http://badge.fury.io/js/cordova-plugin-native-transitions)\n\nEmulating transitions are a thing of the past, you can now use real native page transitions directly from your JavaScript!\n\n[![Video](http://ilee.co.uk/img/transition.png)](https://vimeo.com/81980283)\n\nYou can read the full blog post [here](http://ilee.co.uk/native-page-transitions-with-phonegap/).\n\n#### Live demo\n\nSee this plugin working in a live app: http://playadds.com\n\n## Install\n\n#### Latest published version on npm (with Cordova CLI >= 5.0.0)\n\n```\ncordova plugin add cordova-plugin-native-transitions\n```\n\n#### Latest version from GitHub\n\n```\ncordova plugin add https://github.com/leecrossley/cordova-plugin-native-transitions.git\n```\n\nYou **do not** need to reference any JavaScript, the Cordova plugin architecture will add a nativetransitions object to your root automatically when you build.\n\n#### PhoneGap build\n\nAdd the following to your `config.xml` to use version 0.1.4 (you can also omit the version attribute to always use the latest version). You should now use the npm source:\n\n```\n<gap:plugin name=\"cordova-plugin-native-transitions\" version=\"0.2.3\" source=\"npm\" />\n```\n\nFor more information, see the [PhoneGap build docs](http://docs.build.phonegap.com/en_US/configuring_plugins.md.html#Plugins).\n\n## Transitions\n\n### Flip\n\n```js\nvar duration = 0.5, // animation time in seconds\n    direction = \"right\"; // animation direction - left | right | top | bottom\nnativetransitions.flip(duration, direction, onComplete);\n```\n\n### Curl\n\n```js\nvar duration = 0.5, // animation time in seconds\n    direction = \"down\"; // animation direction - up | down\nnativetransitions.curl(duration, direction, onComplete);\n```\n\n### Fade\n\n```js\nvar duration = 0.5; // animation time in seconds\nnativetransitions.fade(duration, onComplete);\n```\n\n## Example\n\nHere's an example of how I suggest you use the plugin in your code, so that you get a realistic transition:\n\n```js\nsetTimeout(function() {\n    // Change your html here\n}, 50);\nnativetransitions.flip(duration, direction);\n```\n\n## Platform Support\n\nCurrently iOS only (version 5 and higher).\n\n## License\n\n[MIT License](http://ilee.mit-license.org)\n",
+  "readmeFilename": "README.md",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/leecrossley/cordova-plugin-native-transitions.git"
+  },
+  "scripts": {},
+  "version": "0.2.3"
+}
