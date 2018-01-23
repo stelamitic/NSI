@@ -5253,12 +5253,12 @@ a.thumbnail:focus {
 }
 
 .list-group-item {
-  position: relative;
-  display: block;
-  padding: 10px 15px;
-  margin-bottom: -1px;
-  background-color: #ffffff;
-  border: 1px solid #dddddd;
+    position: relative;
+    display: block;
+    padding: 10px 15px;
+    margin-bottom: -1px;
+    background-color: #ffffff;
+    border: 1px solid #dddddd;
 }
 
 .list-group-item:first-child {
@@ -5281,18 +5281,81 @@ a.thumbnail:focus {
 }
 
 a.list-group-item {
-  color: #555555;
+    color: #555555;
+    background-color: #0e0e0e;
+    /*background-image: url("../css/images/next_button.png");
+    background-position: right;
+    background-size: 30px;
+    background-repeat: no-repeat;
+    background-position-x: 320px;*/
 }
+
+#espresso {
+    background-image: url("../css/images/espresso.jpg"),url("../css/images/next_button.png");
+    background-size: 35px,30px;
+    background-repeat: no-repeat;
+    background-position: left,right;
+    background-position-x: 14px,320px;
+    padding-right: 170px;
+}
+#cappuccino {
+    background-image: url("../css/images/cappuccino.png"),url("../css/images/next_button.png");
+    background-size: 30px;
+    background-repeat: no-repeat;
+    background-position: left,right;
+    background-position-x: 14px,320px;
+    padding-right: 150px;
+}
+#macchiato {
+    background-image: url("../css/images/macchiato.png"),url("../css/images/next_button.png");
+    background-size: 35px,30px;
+    background-repeat: no-repeat;
+    background-position: left,right;
+    background-position-x: 11px,320px;
+    padding-right: 157px;
+}
+#caffeLatte {
+    background-image: url("../css/images/caffeLatte.png"),url("../css/images/next_button.png");
+    background-size: 40px,30px;
+    background-repeat: no-repeat;
+    background-position: left,right;
+    background-position-x: 9px,320px;
+    padding-right: 145px;
+}
+#americano {
+    background-image: url("../css/images/americano.png"),url("../css/images/next_button.png");
+    background-size: 35px,30px;
+    background-repeat: no-repeat;
+    background-position: left,right;
+    background-position-x: 10px,320px;
+    padding-right: 159px;
+}
+#irishCoffee {
+    background-image: url("../css/images/irishCoffee.png"),url("../css/images/next_button.png");
+    background-size: 30px,30px;
+    background-repeat: no-repeat;
+    background-position: left,right;
+    background-position-x: 12px,320px;
+    padding-right: 148px;
+}
+#mocha {
+    background-image: url("../css/images/mocha.png"),url("../css/images/next_button.png");
+    background-size: 35px,30px;
+    background-repeat: no-repeat;
+    background-position: left,right;
+    background-position-x: 11px,320px;
+    padding-right: 192px;
+} 
 
 a.list-group-item .list-group-item-heading {
-  color: #333333;
+    color: #333333;
 }
 
-a.list-group-item:hover,
-a.list-group-item:focus {
-  text-decoration: none;
-  background-color: #f5f5f5;
-}
+    a.list-group-item:hover,
+    a.list-group-item:focus {
+        text-decoration: none;
+        background-color: #2d2d2d;
+    }
 
 .list-group-item.active,
 .list-group-item.active:hover,
@@ -5309,11 +5372,11 @@ a.list-group-item:focus {
   color: inherit;
 }
 
-.list-group-item.active .list-group-item-text,
-.list-group-item.active:hover .list-group-item-text,
-.list-group-item.active:focus .list-group-item-text {
-  color: #e1edf7;
-}
+    .list-group-item.active .list-group-item-text,
+    .list-group-item.active:hover .list-group-item-text,
+    .list-group-item.active:focus .list-group-item-text {
+        color: #e1edf7;
+    }
 
 .list-group-item-heading {
   margin-top: 0;

@@ -1,0 +1,178 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <!--
+        Customize the content security policy in the meta tag below as needed. Add 'unsafe-inline' to default-src to enable inline JavaScript.
+        For details, see http://go.microsoft.com/fwlink/?LinkID=617521
+    -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *">
+
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    <link rel="stylesheet" type="text/css" href="css/index.css">
+    <!-- CSS
+    ================================================== -->
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/css/base.css">
+    <link rel="stylesheet" href="css/css/main.css">
+    <link rel="stylesheet" href="css/css/vendor.css">
+
+    <!-- script
+    ================================================== -->
+    <script src="scripts/modernizr.js"></script>
+
+    <title>NSICordova</title>
+</head>
+<body>
+    <div class="app">
+        <div id="deviceready">
+            <!-- header
+            ================================================== -->
+            <header>
+
+                <div class="row">
+
+                    <div class="logo">
+                        <a id="backBtn" style="background-image: url(css/images/back_button.png);background-size:30px;cursor:pointer"></a>
+                    </div>
+
+                    <nav id="main-nav-wrap">
+                        <ul class="main-navigation">
+                            <li><a class="smoothscroll" id="renderHome" href="index.html" title="" target="_self">Home</a></li>
+                            <li><a class="smoothscroll" id="renderCoffees" href="#coffees" title="">Coffees</a></li>
+                            <li><a class="smoothscroll popup-with-form" role="button" href="#editProfileForm" style="display:none;" title="">Profile</a></li>
+                            <li><a class="smoothscroll" role="button" href="#users" style="display:none;" title="">Users</a></li>
+                            <li><a class="smoothscroll popup-with-form" href="#loginForm" title="">Login</a></li>
+                            <li class="highlight with-sep"><a href="#signUpForm" class="popup-with-form" title="">Sign Up</a></li>
+                        </ul>
+                    </nav>
+
+                    <a class="menu-toggle" href="#"><span>Menu</span></a>
+
+                </div>
+
+            </header> <!-- /header -->
+            <!-- intro section
+            ================================================== -->
+            <!-- Modal Popup
+            ========================================================= -->
+            <div>
+                <form id="signUpForm" class="popup-modal mfp-hide">
+                    <h1>User details:</h1>
+                    <ul>
+                        <li>
+                            <label for="username">Username</label>
+                            <input id="username" name="username" type="text" placeholder="Username" required="">
+                        </li>
+                        <li>
+                            <label for="password">Password:</label>
+                            <input id="password" name="password" type="password" placeholder="Password" required="">
+                        </li>
+                        <li>
+                            <label for="email">Email</label>
+                            <input id="email" name="email" type="email" placeholder="example@domain.com" required="">
+                        </li>
+                        <li>
+                            <button id="signUpBtn" type="button">Sign up</button>
+                        </li>
+                    </ul>
+                </form>
+            </div> <!--Sign up-->
+
+            <div>
+                <form id="loginForm" class="popup-modal mfp-hide">
+                    <h1>User details:</h1>
+                    <ul>
+                        <li>
+                            <label for="username">Username</label>
+                            <input name="username" type="text" placeholder="Username" required="">
+                        </li>
+                        <li>
+                            <label for="password">Password:</label>
+                            <input name="password" type="password" placeholder="Password" required="">
+                        </li>
+                        <li>
+                            <button id="loginBtn" type="button">Login</button>
+                        </li>
+                    </ul>
+                </form>
+            </div> <!--Log in-->
+            <!-- Process Section
+            ================================================== -->
+            <section id="home" style="min-height:605px">
+                <div class="intro-content" style="color:white">
+                    <div class="row section-intro" style="margin-bottom:-1.8rem;margin-top:140px">
+                        <div class="col-twelve with-bottom-line" style="margin-top:-410px">
+                            <h1 class="header">You picked </h1>
+                            <h2 id="coffeeName" class="coffeName"></h2>
+                        </div>
+                            <form name="radioBtnForm" style="margin-top:12px">
+                                <div style="display:inline-block; margin-left:110px; float:left">
+                                    <input type="radio" name="size" value="small" id="size" checked>
+                                </div>
+                                <div style="display:inline-block; margin-left:8px;float:left ">
+                                    <p id="small"></p>
+                                </div>
+                                <br />
+                                <div style="display:inline-block;margin-left:-112px; float:left">
+                                    <input type="radio" name="size" value="large" id="size">
+                                </div>
+                                <div style="display:inline-block; margin-left:-89px; float:left">
+                                    <p id="large"></p>
+                                </div>
+                                <br />
+                            </form>
+                        <h2 style="color:white">Add extras</h2>
+                       
+                                <div style="margin-left:110px; float:left">
+                                    <input id="sugar" type="checkbox" value="sugar" class="chk">  Sugar: 0.2$ <br />
+                                    </div>
+                                <div style=" margin-left:110px; float:left">
+                                    <input id="cinnamon" type="checkbox" value="cinnamon" class="chk" >  Cinnamon: 0.3$<br />
+                                    </div>
+                                <div style=" margin-left:110px; float:left">
+                                    <input id="rum" type="checkbox" value="rum" class="chk" >  Rum: 0.4$<br />
+                                    </div>
+                                <div style=" margin-left:110px; float:left">
+                                    <input id="vanilla" type="checkbox" value="vanilla" class="chk" >  Vanilla Extract: 0.3$<br />
+                                    </div>
+                                <div style=" margin-left:110px; float:left">
+                                    <input id="icecream" type="checkbox" value="icecream" class="chk" >  Ice Cream: 0.4$<br />
+                                 </div>
+                        
+                        <br />
+                     
+                    </div>
+                    <div class="row process-content">
+
+                        <button id="orderBtn" type="button">Order</button>
+                    </div>
+                  
+
+                </div>
+
+            </section> <!-- /process-->
+            <!-- features Section
+            ================================================== -->
+            <!-- Java Script
+            ================================================== -->
+            <!--<p class="event listening">Connecting to Device</p>
+            <p class="event received">Device is Ready</p>-->
+        </div>
+    </div>
+
+    <!-- The 'async' attribute is needed for RequireJS to work in a Windows app -->
+    <script type="text/javascript" data-main="scripts/startup" src="lib/require.2.1.8.js" async></script>
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="scripts/application.js"></script>
+    <script src="scripts/jquery-1.11.3.min.js"></script>
+    <script src="scripts/jquery-migrate-1.2.1.min.js"></script>
+    <script src="scripts/handlebars-v4.0.5.js"></script>
+    <script src="scripts/cookie.js"></script>
+    <script src="scripts/plugins.js"></script>
+    <script src="scripts/script.js"></script>
+    <script src="scripts/main.js"></script>
+</body>
+</html>

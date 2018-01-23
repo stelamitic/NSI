@@ -1,0 +1,4 @@
+C:\Users\Stela\Dropbox\NSICordova\NSICordova\www\scripts\application.js
+C:\Users\Stela\Dropbox\NSICordova\NSICordova\www\scripts\application.js.map
+C:\Users\Stela\Dropbox\NSICordova\NSICordova\www\scripts\startup.js
+C:\Users\Stela\Dropbox\NSICordova\NSICordova\www\scripts\startup.js.map

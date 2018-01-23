@@ -1,0 +1,76 @@
+{
+  "_args": [
+    [
+      {
+        "raw": "https://github.com/JonSmart/CordovaYoutubeVideoPlayer",
+        "scope": null,
+        "escapedName": null,
+        "name": null,
+        "rawSpec": "https://github.com/JonSmart/CordovaYoutubeVideoPlayer",
+        "spec": "git+https://github.com/JonSmart/CordovaYoutubeVideoPlayer.git",
+        "type": "hosted",
+        "hosted": {
+          "type": "github",
+          "ssh": "git@github.com:JonSmart/CordovaYoutubeVideoPlayer.git",
+          "sshUrl": "git+ssh://git@github.com/JonSmart/CordovaYoutubeVideoPlayer.git",
+          "httpsUrl": "git+https://github.com/JonSmart/CordovaYoutubeVideoPlayer.git",
+          "gitUrl": "git://github.com/JonSmart/CordovaYoutubeVideoPlayer.git",
+          "shortcut": "github:JonSmart/CordovaYoutubeVideoPlayer",
+          "directUrl": "https://raw.githubusercontent.com/JonSmart/CordovaYoutubeVideoPlayer/master/package.json"
+        }
+      },
+      "C:\\Users\\Stela\\Dropbox\\NSICordova\\NSICordova"
+    ]
+  ],
+  "_from": "git+https://github.com/JonSmart/CordovaYoutubeVideoPlayer.git",
+  "_id": "com.bunkerpalace.cordova.YoutubeVideoPlayer@1.0.1",
+  "_inCache": true,
+  "_location": "/com.bunkerpalace.cordova.YoutubeVideoPlayer",
+  "_phantomChildren": {},
+  "_requested": {
+    "raw": "https://github.com/JonSmart/CordovaYoutubeVideoPlayer",
+    "scope": null,
+    "escapedName": null,
+    "name": null,
+    "rawSpec": "https://github.com/JonSmart/CordovaYoutubeVideoPlayer",
+    "spec": "git+https://github.com/JonSmart/CordovaYoutubeVideoPlayer.git",
+    "type": "hosted",
+    "hosted": {
+      "type": "github",
+      "ssh": "git@github.com:JonSmart/CordovaYoutubeVideoPlayer.git",
+      "sshUrl": "git+ssh://git@github.com/JonSmart/CordovaYoutubeVideoPlayer.git",
+      "httpsUrl": "git+https://github.com/JonSmart/CordovaYoutubeVideoPlayer.git",
+      "gitUrl": "git://github.com/JonSmart/CordovaYoutubeVideoPlayer.git",
+      "shortcut": "github:JonSmart/CordovaYoutubeVideoPlayer",
+      "directUrl": "https://raw.githubusercontent.com/JonSmart/CordovaYoutubeVideoPlayer/master/package.json"
+    }
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "git+https://github.com/JonSmart/CordovaYoutubeVideoPlayer.git#819fac1231022c05925b0f5391ec565e6a0f9907",
+  "_shasum": "4e7ce8c8ae6a7517d4e373bc1c415c0ea203ef6a",
+  "_shrinkwrap": null,
+  "_spec": "https://github.com/JonSmart/CordovaYoutubeVideoPlayer",
+  "_where": "C:\\Users\\Stela\\Dropbox\\NSICordova\\NSICordova",
+  "cordova": {
+    "id": "com.bunkerpalace.cordova.YoutubeVideoPlayer",
+    "platforms": [
+      "android",
+      "ios"
+    ]
+  },
+  "dependencies": {},
+  "description": "**Play Youtube Videos in a native Video Player on Android &amp; iOS.**",
+  "devDependencies": {},
+  "engines": {
+    "cordovaDependencies": {}
+  },
+  "gitHead": "819fac1231022c05925b0f5391ec565e6a0f9907",
+  "name": "com.bunkerpalace.cordova.YoutubeVideoPlayer",
+  "optionalDependencies": {},
+  "readme": "# Cordova YoutubeVideoPlayer Plugin\r\n\r\n**Play Youtube Videos in a native Video Player on Android &amp; iOS.**\r\n\r\n**This fork works on Android 6, and does not force landscape mode on Android.**\r\n\r\n\r\niOS plugin uses **XCDYouTubeKit** by Cédric Luthi:  \r\nhttps://github.com/0xced/XCDYouTubeKit\r\n\r\nAndroid version (up to 4.4) uses **OpenYoutubeActivity** by Keyes Labs:  \r\nhttps://code.google.com/p/android-youtube-player\r\n\r\nAndroid version (5.0+) uses YouTube Android Player API:\r\nhttps://developers.google.com/youtube/android/player/reference/com/google/android/youtube/player/YouTubePlayer\r\n\r\nAndroid with YouTube App Version 111662130 requires a workaround to resolve an App issue:\r\nhttps://code.google.com/p/gdata-issues/issues/detail?id=8244\r\n\r\n## Installation\r\n\r\n```sh\r\ncordova plugin add https://github.com/JonSmart/CordovaYoutubeVideoPlayer\r\n```\r\n\r\n## Usage\r\n\r\n```javascript\r\nYoutubeVideoPlayer.openVideo('YOUTUBE_VIDEO_ID', function(result) { console.log('YoutubeVideoPlayer result = ' + result); });\r\n```\r\n\r\nFor Android 5.0+ you will need to add the following to config.xml\r\n\r\n```xml\r\n<preference name=\"YouTubeDataApiKey\" value=\"[YOUR YOUTUBE API]\" />\r\n```\r\nwith your own YouTube Key.\r\n\r\n For more information: https://developers.google.com/youtube/v3/getting-started\r\n\r\nThe callback is called when the video window is closed.  (Work in Progress - should be working for IOS).\r\n\r\n## Author\r\n\r\n**Adrien Glitchbone**\r\n\r\n+ [https://twitter.com/glitchbone](https://twitter.com/glitchbone)\r\n+ [http://github.com/Glitchbone](http://github.com/Glitchbone)\r\n\r\n**d0cz**\r\n+ [http://github.com/d0cz](http://github.com/d0cz)\r\n\r\n**trakout**\r\n+ [https://github.com/trakout](https://github.com/trakout)\r\n\r\n## License\r\n\r\nCordovaYoutubeVideoPlayer is available under the MIT license. See the [LICENSE](LICENSE) file for more information.  \r\nXCDYouTubeKit is available under the MIT license.  \r\nOpenYoutubeActivity is available under the Apache License 2.0.  \r\n",
+  "readmeFilename": "README.md",
+  "version": "1.0.1"
+}

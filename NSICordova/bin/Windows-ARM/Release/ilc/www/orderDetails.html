@@ -1,0 +1,164 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <!--
+        Customize the content security policy in the meta tag below as needed. Add 'unsafe-inline' to default-src to enable inline JavaScript.
+        For details, see http://go.microsoft.com/fwlink/?LinkID=617521
+    -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *">
+
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    <link rel="stylesheet" type="text/css" href="css/index.css">
+    <!-- CSS
+    ================================================== -->
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/css/base.css">
+    <link rel="stylesheet" href="css/css/main.css">
+    <link rel="stylesheet" href="css/css/vendor.css">
+
+    <!-- script
+    ================================================== -->
+    <script src="scripts/modernizr.js"></script>
+
+    <title>NSICordova</title>
+</head>
+<body>
+    <div class="app">
+        <div id="deviceready">
+            <!-- header
+            ================================================== -->
+            <header>
+
+                <div class="row">
+
+                    <div class="logo">
+                        <a id="backBtn" style="background-image: url(css/images/back_button.png);background-size:30px;cursor:pointer"></a>
+                        <!--<a style="background-image: url(css/images/arrow-left.png)">Coffee Shop</a>-->
+                    </div>
+
+                    <nav id="main-nav-wrap">
+                        <ul class="main-navigation">
+                            <li><a class="smoothscroll" id="renderHome" href="index.html" title="" target="_self">Home</a></li>
+                            <li><a class="smoothscroll" id="renderCoffees" href="#coffees" title="">Coffees</a></li>
+                            <li><a class="smoothscroll popup-with-form" role="button" href="#editProfileForm" style="display:none;" title="">Profile</a></li>
+                            <li><a class="smoothscroll" role="button" href="#users" style="display:none;" title="">Users</a></li>
+                            <li><a class="smoothscroll popup-with-form" href="#loginForm" title="">Login</a></li>
+                            <li class="highlight with-sep"><a href="#signUpForm" class="popup-with-form" title="">Sign Up</a></li>
+                        </ul>
+                    </nav>
+
+                    <a class="menu-toggle" href="#"><span>Menu</span></a>
+
+                </div>
+
+            </header> <!-- /header -->
+            <!-- intro section
+            ================================================== -->
+            <!-- Modal Popup
+            ========================================================= -->
+            <div>
+                <form id="signUpForm" class="popup-modal mfp-hide">
+                    <h1>User details:</h1>
+                    <ul>
+                        <li>
+                            <label for="username">Username</label>
+                            <input id="username" name="username" type="text" placeholder="Username" required="">
+                        </li>
+                        <li>
+                            <label for="password">Password:</label>
+                            <input id="password" name="password" type="password" placeholder="Password" required="">
+                        </li>
+                        <li>
+                            <label for="email">Email</label>
+                            <input id="email" name="email" type="email" placeholder="example@domain.com" required="">
+                        </li>
+                        <li>
+                            <button id="signUpBtn" type="button">Sign up</button>
+                        </li>
+                    </ul>
+                </form>
+            </div> <!--Sign up-->
+
+            <div>
+                <form id="loginForm" class="popup-modal mfp-hide">
+                    <h1>User details:</h1>
+                    <ul>
+                        <li>
+                            <label for="username">Username</label>
+                            <input name="username" type="text" placeholder="Username" required="">
+                        </li>
+                        <li>
+                            <label for="password">Password:</label>
+                            <input name="password" type="password" placeholder="Password" required="">
+                        </li>
+                        <li>
+                            <button id="loginBtn" type="button">Login</button>
+                        </li>
+                    </ul>
+                </form>
+            </div> <!--Log in-->
+            <!-- Process Section
+            ================================================== -->
+            <section id="home">
+                <div class="intro-content" style="color:white">
+                    <div class="row section-intro">
+                        <div class="col-twelve with-bottom-line" style="margin-top:-367px">
+                            <h1 class="header">Your order:</h1>
+                        </div>
+                        <div style="display:inline-block">
+                            <br />
+                            <h4 id="coffeeOrder" style="color:white"></h4>
+                        </div>
+                        <br />
+                        <div style="display:inline-block">
+                            <h4 id="sizeOrder" style="color:white"></h4>
+                        </div>
+                        <br />
+                        <div style="display:inline-block">
+                            <h4 id="extrasOrder" style="color:white"></h4>
+                        </div>
+                        <br />
+                        <div style="display:inline-block">
+                            <h3 id="priceOrder" style="color:#05bca9"></h3>
+                        </div>
+                        <br />
+
+                        <button id="confirmBtn" type="button">Confirm</button>
+                        <!--<button id="addBtn" type="button">Add more coffees</button>-->
+                        <!--<button id="cancelBtn" type="button">Cancel this order</button>-->
+                    </div>
+
+                    <div class="row process-content" style="margin-top:-218px">
+                      
+                    </div>
+
+
+                </div>
+
+            </section> <!-- /process-->
+            <!-- features Section
+            ================================================== -->
+            <!-- Java Script
+            ================================================== -->
+            <!--<p class="event listening">Connecting to Device</p>
+            <p class="event received">Device is Ready</p>-->
+        </div>
+    </div>
+
+    <!-- The 'async' attribute is needed for RequireJS to work in a Windows app -->
+    <script type="text/javascript" data-main="scripts/startup" src="lib/require.2.1.8.js" async></script>
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="scripts/application.js"></script>
+    <script src="scripts/jquery-1.11.3.min.js"></script>
+    <script src="scripts/jquery-migrate-1.2.1.min.js"></script>
+    <script src="scripts/handlebars-v4.0.5.js"></script>
+    <script src="scripts/cookie.js"></script>
+    <script src="scripts/plugins.js"></script>
+    <script src="scripts/smtp.js"></script>
+    <script src="scripts/script.js"></script>
+    <script src="scripts/main.js"></script>
+</body>
+</html>

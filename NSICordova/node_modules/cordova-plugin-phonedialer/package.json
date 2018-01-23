@@ -1,0 +1,93 @@
+{
+  "_args": [
+    [
+      {
+        "raw": "cordova-plugin-phonedialer",
+        "scope": null,
+        "escapedName": "cordova-plugin-phonedialer",
+        "name": "cordova-plugin-phonedialer",
+        "rawSpec": "",
+        "spec": "latest",
+        "type": "tag"
+      },
+      "C:\\Users\\Stela\\Dropbox\\NSICordova\\NSICordova"
+    ]
+  ],
+  "_from": "cordova-plugin-phonedialer@latest",
+  "_id": "cordova-plugin-phonedialer@0.3.1",
+  "_inCache": true,
+  "_location": "/cordova-plugin-phonedialer",
+  "_nodeVersion": "5.10.0",
+  "_npmOperationalInternal": {
+    "host": "packages-12-west.internal.npmjs.com",
+    "tmp": "tmp/cordova-plugin-phonedialer-0.3.1.tgz_1459859863680_0.07733506569638848"
+  },
+  "_npmUser": {
+    "name": "42loops",
+    "email": "paul@42loops.com"
+  },
+  "_npmVersion": "3.8.3",
+  "_phantomChildren": {},
+  "_requested": {
+    "raw": "cordova-plugin-phonedialer",
+    "scope": null,
+    "escapedName": "cordova-plugin-phonedialer",
+    "name": "cordova-plugin-phonedialer",
+    "rawSpec": "",
+    "spec": "latest",
+    "type": "tag"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/cordova-plugin-phonedialer/-/cordova-plugin-phonedialer-0.3.1.tgz",
+  "_shasum": "19bdea86d1b6cc6b0ad428eaf4df280e6f9aa16a",
+  "_shrinkwrap": null,
+  "_spec": "cordova-plugin-phonedialer",
+  "_where": "C:\\Users\\Stela\\Dropbox\\NSICordova\\NSICordova",
+  "author": "",
+  "bugs": {
+    "url": "https://github.com/peutetre/PhoneGap-PhoneDialer/issues"
+  },
+  "cordova": {
+    "id": "cordova-plugin-hockeyapp",
+    "platforms": [
+      "android",
+      "ios"
+    ]
+  },
+  "dependencies": {},
+  "description": "Dials Phone without extra confirmation pop-up",
+  "devDependencies": {},
+  "directories": {},
+  "dist": {
+    "shasum": "19bdea86d1b6cc6b0ad428eaf4df280e6f9aa16a",
+    "tarball": "https://registry.npmjs.org/cordova-plugin-phonedialer/-/cordova-plugin-phonedialer-0.3.1.tgz"
+  },
+  "gitHead": "73befcbcdc79261151e11b51153723b2a4607b20",
+  "homepage": "https://github.com/peutetre/PhoneGap-PhoneDialer#readme",
+  "keywords": [
+    "cordova",
+    "ecosystem:cordova",
+    "cordova-android",
+    "cordova-ios"
+  ],
+  "license": "Apache 2.0",
+  "maintainers": [
+    {
+      "name": "42loops",
+      "email": "paul@42loops.com"
+    }
+  ],
+  "name": "cordova-plugin-phonedialer",
+  "optionalDependencies": {},
+  "readme": "Description\n===========\nEnables PhoneGap apps on the iPhone and Android platforms\nto dial a phone number without requireing additional user\ninteraction (such as the 'Call / Cancel' popup that ordinarilly \nwould occur when using window.location.href = \"tel:2125551212\".\n\n\nUsage\n=====\n\n```javascript\n\nError return by the plugin : [\"feature\",\"empty\"]\n\nphonedialer.dial(\n  \"2125551212\", \n  function(err) {\n    if (err == \"empty\") alert(\"Unknown phone number\");\n    else alert(\"Dialer Error:\" + err);    \n  },\n  function(success) { alert('Dialing succeeded'); }\n );\n\n```\n\nInstallation\n============\nphonegap local plugin add \"current repo\"\n\n",
+  "readmeFilename": "README.md",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/peutetre/PhoneGap-PhoneDialer.git"
+  },
+  "scripts": {},
+  "version": "0.3.1"
+}

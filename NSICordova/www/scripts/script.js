@@ -1,32 +1,161 @@
-﻿var user = null;
+﻿var user;
 var storage;
-var coffee = null;
+var coffee;
+var size;
 var price = 0;
 var extras = new Array;
-var tags = new Array;
-
-var usersTemplate;
-var coffeesTemplate;
-var extrasTemplate;
-var ordersTemplate;
-var tagsTemplate;
-
-var refreshUsersId;
-var refreshCoffeesId;
-var refreshExtrasId;
-var refreshTagsId;
+var orders = new Array;
+var myMedia = null;
 
 (function () {
     "use strict";
 
     document.addEventListener('deviceready', onDeviceReady.bind(this), false);
 
+    document.addEventListener("backbutton", onBackKeyDown, false);
+
+    function onBackKeyDown(e) {
+        e.preventDefault();
+        var prevPage;
+        var currentPage = location.pathname.substring(1);
+        switch (currentPage) {
+            case "android_asset/www/index.html":
+                prevPage = "index.html";
+                break;
+            case "android_asset/www/coffees.html":
+                prevPage = "index.html";
+                break;
+            case "android_asset/www/coffeeDetails.html":
+                prevPage = "coffees.html";
+                break;
+            case "android_asset/www/orderDetails.html":
+                prevPage = "coffeeDetails.html";
+                break;
+
+        }
+        var options = {
+            "direction": "right", // 'left|right|up|down', default 'left' (which is like 'next')
+            "duration": 400, // in milliseconds (ms), default 400
+            "slowdownfactor": 3, // overlap views (higher number is more) or no overlap (1).
+                                //-1 doesn't slide at all. Default 4
+            "slidePixels": 20, // optional, works nice with slowdownfactor -1 to create a 'material design'
+                              //-like effect. Default not set so it slides the entire page.
+            "iosdelay": 100, // ms to wait for the iOS webview to update before animation kicks in, default 60
+            "androiddelay": 150, // same as above but for Android, default 70
+            "winphonedelay": 250, // same as above but for Windows Phone, default 200,
+            "fixedPixelsTop": 0, // the number of pixels of your fixed header, default 0 (iOS and Android)
+            "fixedPixelsBottom": 0,  // the number of pixels of your fixed footer (f.i. a tab bar), default 0 (iOS and Android)
+            "href": prevPage
+        };
+        window.plugins.nativepagetransitions.slide(
+            options,
+            function (msg) { console.log("success: " + msg) }, // called when the animation has finished
+            function (msg) { alert("error: " + msg) } // called in case you pass in weird values
+        );
+    }
+
     function onDeviceReady() {
 
-        document.getElementById("signUpBtn").addEventListener('click', signUp);
-        document.getElementById("loginBtn").addEventListener('click', logIn);
+        if (document.getElementById("orderBtn") != null)
+            document.getElementById("orderBtn").addEventListener('click', showOrderDetails);
+        if (document.getElementById("cancelBtn") != null)
+            document.getElementById("cancelBtn").addEventListener('click', cancelOrder);
+        if (document.getElementById("callBtn") != null)
+            document.getElementById("callBtn").addEventListener('click', makePhoneCall);
+        if (document.getElementById("audioCaptureBtn") != null)
+            document.getElementById("audioCaptureBtn").addEventListener("click", audioCapture);
+        if (document.getElementById("uploadBtn") != null)
+            document.getElementById("uploadBtn").addEventListener("click", cameraTakePicture);
+        if (document.getElementById("videoBtn") != null)
+            document.getElementById("videoBtn").addEventListener("click", playVideo);
+        if (document.getElementById("confirmBtn") != null)
+            document.getElementById("confirmBtn").addEventListener('click', confirmOrder);
+        if (document.getElementById("signUpBtn") != null)
+            document.getElementById("signUpBtn").addEventListener('click', signUp);
+        if (document.getElementById("loginBtn") != null)
+            document.getElementById("loginBtn").addEventListener('click', logIn);
+        if (document.getElementById("renderHome") != null)
+            document.getElementById("renderHome").addEventListener('click', showHome);
+        if (document.getElementById("renderCoffees") != null)
+            document.getElementById("renderCoffees").addEventListener('click', showCoffees);
+        if (document.getElementById("startBtn") != null)
+            document.getElementById("startBtn").addEventListener('click', showCoffees);
+        if (document.getElementById("backBtn") != null)
+            document.getElementById("backBtn").addEventListener('click', goBack);
+        if (document.getElementById("espresso") != null)
+            document.getElementById("espresso").addEventListener('click', showCoffeeDetails.bind(this, 'espresso'));
+        if (document.getElementById("cappuccino") != null)
+            document.getElementById("cappuccino").addEventListener('click', showCoffeeDetails.bind(this, 'cappuccino'));
+        if (document.getElementById("macchiato") != null)
+            document.getElementById("macchiato").addEventListener('click', showCoffeeDetails.bind(this, 'macchiato'));
+        if (document.getElementById("caffeLatte") != null)
+            document.getElementById("caffeLatte").addEventListener('click', showCoffeeDetails.bind(this, 'caffee latte'));
+        if (document.getElementById("americano") != null)
+            document.getElementById("americano").addEventListener('click', showCoffeeDetails.bind(this, 'americano'));
+        if (document.getElementById("irishCoffee") != null)
+            document.getElementById("irishCoffee").addEventListener('click', showCoffeeDetails.bind(this, 'irish coffee'));
+        if (document.getElementById("mocha") != null)
+            document.getElementById("mocha").addEventListener('click', showCoffeeDetails.bind(this, 'mocha'));
+        if (document.getElementById("priceBtn") != null)
+            document.getElementById("priceBtn").addEventListener('click', calculatePrice);
 
-     
+        if (document.getElementById("coffeeName") != null) {
+
+            var usernameCoffee = Cookies.get('usernameCoffee');
+            var splited = usernameCoffee.split(',');
+            coffee = splited[1];
+            document.getElementById("coffeeName").innerHTML = coffee;
+            document.getElementById("small").innerHTML = " Small: " + getSmallPriceByName(coffee) + "$";
+            document.getElementById("large").innerHTML = " Large: " + getLargePriceByName(coffee) + "$";
+        }
+
+        if (document.getElementById("size") != null)
+            document.getElementById("size").addEventListener('change', calculatePrice());
+
+        //extras
+       if (document.getElementById("sugar") != null)
+            document.getElementById("sugar").addEventListener('click', handleClick("sugar"));
+
+       if (document.getElementById("coffeeOrder") != null) {
+
+           var usernameOrder = Cookies.get('usernameOrder');
+           var splited = usernameOrder.split(';');
+           coffee = splited[1];
+           size = splited[2];
+           extras = splited[3];
+           price = splited[4];
+
+           document.getElementById("coffeeOrder").innerHTML = " Coffee: " + coffee;
+           document.getElementById("sizeOrder").innerHTML = " Size: " + size;
+           if (extras == "")
+               document.getElementById("extrasOrder").innerHTML = " Extras: none";
+           else
+               document.getElementById("extrasOrder").innerHTML = " Extras: " + extras;
+           document.getElementById("priceOrder").innerHTML = " Total price: " + (Number(price)).toFixed(1) + "$";
+
+       }
+
+
+    }
+
+    function encodeQueryData(data) {
+        let ret = [];
+        for (let d in data)
+            ret.push(encodeURIComponent(d) + '=' + encodeURIComponent(data[d]));
+        return ret.join('&');
+    }
+
+    function getParameterByName(name, url) {
+        if (!url) url = window.location.href;
+        name = name.replace(/[\[\]]/g, "\\$&");
+        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+            results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, " "));
+    }
+
+
         var serializeObject = function (form) {
             var $form = $(form);
             var formObject = {};
@@ -70,17 +199,196 @@ var refreshTagsId;
             refreshOrdersId = setInterval('ordersList()', 1000);
         });
 
-        //USER
+    //SHOW PAGES
 
-        function signUp()
+        function goBack()
         {
+            var prevPage;
+            var currentPage = location.pathname.substring(1);
+            switch (currentPage) {
+                case "android_asset/www/index.html":
+                    prevPage = "index.html";
+                    break;
+                case "android_asset/www/coffees.html":
+                    prevPage = "index.html";
+                    break;
+                case "android_asset/www/coffeeDetails.html":
+                    prevPage = "coffees.html";
+                    break;
+                case "android_asset/www/orderDetails.html":
+                    prevPage = "coffeeDetails.html";
+                    break;
+
+            }
+            var options = {
+                "direction": "right", // 'left|right|up|down', default 'left' (which is like 'next')
+                "duration": 400, // in milliseconds (ms), default 400
+                "slowdownfactor": 3, // overlap views (higher number is more) or no overlap (1). -1 doesn't slide at all. Default 4
+                "slidePixels": 20, // optional, works nice with slowdownfactor -1 to create a 'material design'-like effect. Default not set so it slides the entire page.
+                "iosdelay": 100, // ms to wait for the iOS webview to update before animation kicks in, default 60
+                "androiddelay": 150, // same as above but for Android, default 70
+                "winphonedelay": 250, // same as above but for Windows Phone, default 200,
+                "fixedPixelsTop": 0, // the number of pixels of your fixed header, default 0 (iOS and Android)
+                "fixedPixelsBottom": 0,  // the number of pixels of your fixed footer (f.i. a tab bar), default 0 (iOS and Android)
+                "href": prevPage
+            };
+            window.plugins.nativepagetransitions.slide(
+                options,
+                function (msg) { console.log("success: " + msg) }, // called when the animation has finished
+                function (msg) { /*alert("error: " + msg)*/ } // called in case you pass in weird values
+            );
+           // window.location.replace(document.referrer);
+        }
+
+        function showHome() {
+            var options = {
+                "direction": "up", // 'left|right|up|down', default 'left' (which is like 'next')
+                "duration": 400, // in milliseconds (ms), default 400
+                "slowdownfactor": 3, // overlap views (higher number is more) or no overlap (1). -1 doesn't slide at all. Default 4
+                "slidePixels": 20, // optional, works nice with slowdownfactor -1 to create a 'material design'-like effect. Default not set so it slides the entire page.
+                "iosdelay": 100, // ms to wait for the iOS webview to update before animation kicks in, default 60
+                "androiddelay": 150, // same as above but for Android, default 70
+                "winphonedelay": 250, // same as above but for Windows Phone, default 200,
+                "fixedPixelsTop": 0, // the number of pixels of your fixed header, default 0 (iOS and Android)
+                "fixedPixelsBottom": 0,  // the number of pixels of your fixed footer (f.i. a tab bar), default 0 (iOS and Android)
+                "href": "index.html"
+            };
+            window.plugins.nativepagetransitions.slide(
+                options,
+                function (msg) { console.log("success: " + msg) }, // called when the animation has finished
+                function (msg) {/* alert("error: " + msg) */} // called in case you pass in weird values
+            );
+            //window.location.replace("index.html");
+        }
+
+        function showCoffees()
+        {
+            var options = {
+                "direction": "left", // 'left|right|up|down', default 'left' (which is like 'next')
+                "duration": 400, // in milliseconds (ms), default 400
+                "slowdownfactor": 3, // overlap views (higher number is more) or no overlap (1). -1 doesn't slide at all. Default 4
+                "slidePixels": 20, // optional, works nice with slowdownfactor -1 to create a 'material design'-like effect. Default not set so it slides the entire page.
+                "iosdelay": 100, // ms to wait for the iOS webview to update before animation kicks in, default 60
+                "androiddelay": 150, // same as above but for Android, default 70
+                "winphonedelay": 250, // same as above but for Windows Phone, default 200,
+                "fixedPixelsTop": 0, // the number of pixels of your fixed header, default 0 (iOS and Android)
+                "fixedPixelsBottom": 0,  // the number of pixels of your fixed footer (f.i. a tab bar), default 0 (iOS and Android)
+                "href": "coffees.html"
+            };
+            window.plugins.nativepagetransitions.slide(
+                options,
+                function (msg) { console.log("success: " + msg) }, // called when the animation has finished
+                function (msg) { /*alert("error: " + msg)*/ } // called in case you pass in weird values
+            );
+            //window.location.replace("coffees.html");
+        }     
+
+        var showCoffeeDetails = function (coffee) {
+            //var data = { 'coffee': coffee };
+            //var querystring = encodeQueryData(data);
+            //var url = "http://localhost:4400/coffeeDetails.html?";
+            //var concatenated = url.concat(querystring);
+            //window.location.replace(concatenated);
+            var username = Cookies.get('user');
+            Cookies.set('usernameCoffee', username + "," + coffee);
+            var options = {
+                "direction": "left", // 'left|right|up|down', default 'left' (which is like 'next')
+                "duration": 400, // in milliseconds (ms), default 400
+                "slowdownfactor": 3, // overlap views (higher number is more) or no overlap (1). -1 doesn't slide at all. Default 4
+                "slidePixels": 20, // optional, works nice with slowdownfactor -1 to create a 'material design'-like effect. Default not set so it slides the entire page.
+                "iosdelay": 100, // ms to wait for the iOS webview to update before animation kicks in, default 60
+                "androiddelay": 150, // same as above but for Android, default 70
+                "winphonedelay": 250, // same as above but for Windows Phone, default 200,
+                "fixedPixelsTop": 0, // the number of pixels of your fixed header, default 0 (iOS and Android)
+                "fixedPixelsBottom": 0,  // the number of pixels of your fixed footer (f.i. a tab bar), default 0 (iOS and Android)
+                "href": "coffeeDetails.html"
+            };
+            window.plugins.nativepagetransitions.slide(
+                options,
+                function (msg) { console.log("success: " + msg) }, // called when the animation has finished
+                function (msg) { /*alert("error: " + msg)*/ } // called in case you pass in weird values
+            );
+            //window.location.replace('coffeeDetails.html');
+        };
+
+        function showOrderDetails() {
+                calculatePrice();
+                //var data = { 'coffee': coffee, 'size': size, 'extras': extras, 'price': price };
+                //var querystring = encodeQueryData(data);
+                //var url = "http://localhost:4400/orderDetails.html?";
+                //var concatenated = url.concat(querystring);
+                //window.location.replace(concatenated);
+                var username = Cookies.get('user');
+                Cookies.set('usernameOrder', username + ";" + coffee + ";" + size + ";" + extras + ";" + price);
+                //window.location.replace('orderDetails.html');
+                var options = {
+                    "direction": "left", // 'left|right|up|down', default 'left' (which is like 'next')
+                    "duration": 400, // in milliseconds (ms), default 400
+                    "slowdownfactor": 3, // overlap views (higher number is more) or no overlap (1). -1 doesn't slide at all. Default 4
+                    "slidePixels": 20, // optional, works nice with slowdownfactor -1 to create a 'material design'-like effect. Default not set so it slides the entire page.
+                    "iosdelay": 100, // ms to wait for the iOS webview to update before animation kicks in, default 60
+                    "androiddelay": 150, // same as above but for Android, default 70
+                    "winphonedelay": 250, // same as above but for Windows Phone, default 200,
+                    "fixedPixelsTop": 0, // the number of pixels of your fixed header, default 0 (iOS and Android)
+                    "fixedPixelsBottom": 0,  // the number of pixels of your fixed footer (f.i. a tab bar), default 0 (iOS and Android)
+                    "href": "orderDetails.html"
+                };
+                window.plugins.nativepagetransitions.slide(
+                    options,
+                    function (msg) { console.log("success: " + msg) }, // called when the animation has finished
+                    function (msg) { /*alert("error: " + msg)*/ } // called in case you pass in weird values
+                );
+            }
+
+        //function addMoreCoffees() {
+        //    //var data = { 'coffee': coffee, 'size': size, 'extras': extras, 'price': price };
+        //    //var querystring = encodeQueryData(data);
+        //    //var url = "http://localhost:4400/coffees.html?";
+        //    //var concatenated = url.concat(querystring);
+        //    //window.location.replace(concatenated);
+        //    var username = Cookies.get('user');
+        //    Cookies.set('usernameOrder', username + ";" + coffee + ";" + size + ";" + extras + ";" + price);
+        //    window.location.replace('coffees.html');
+
+        //}
+
+        function confirmOrder()
+        {
+            //Email.send("stela.mitic@gmail.com",
+            //    "stela.mitic@elfak.rs",
+            //    "Order",
+            //    "COFFEE: " + coffee + ", SIZE: " + size + ", EXTRAS: " + extras + ", PRICE: " + price,
+            //    "smtp.elasticemail.com",
+            //    "stela.mitic@gmail.com",
+            //    "f58a7e7a- 5cd5- 4d51- 946a- e5f0ff7b1361");
+            //var subject = "Order";
+            var body = "COFFEE: " + coffee + ", SIZE: " + size + ", EXTRAS: " + extras + ", PRICE: " + price;
+            //window.open('mailto:stela.mitic@gmail.com?subject=subject&body=body');
+            var message = "You have successfully ordered.";
+            var title = "Info";
+            var buttonName = "OK";
+            navigator.notification.alert(message, alertCallback, title, buttonName);
+            function alertCallback() {
+                console.log("Alert is Dismissed!");
+            }
+        }
+
+    //USER
+    function signUp() {
             var username = $("#signUpForm input[name='username']").val();
             var password = $("#signUpForm input[name='password']").val();
 
             var email = $("#signUpForm input[name='email']").val();
 
             if (username == "" || password == "" || email == "") {
-                alert("You must fill all fields!");
+               // alert("You must fill all fields!");
+                var message = "You must fill all fields!";
+                var title = "Alert";
+                var buttonName = "OK";
+                navigator.notification.alert(message, alertCallback, title, buttonName);
+                function alertCallback() {
+                    console.log("Alert is Dismissed!");
+                }
                 return;
             }
 
@@ -89,7 +397,17 @@ var refreshTagsId;
                 + "\", email:\"" + email + "\"}";
 
             if (storage.getItem(username) != null)
-                alert("Username already exists.");
+            {
+                //alert("Username already exists.");
+                var message = "Username already exists.";
+                var title = "Alert";
+                var buttonName = "OK";
+                navigator.notification.alert(message, alertCallback, title, buttonName);
+                function alertCallback() {
+                    console.log("Alert is Dismissed!");
+                }
+           }
+    
             else {
                 storage.setItem(username, password);
                 storage.setItem(username, email);
@@ -106,634 +424,33 @@ var refreshTagsId;
             $.magnificPopup.close();
         }
 
-       
-
-        $("#editProfileBtn").click(function () {
-
-            var username = $("#editProfileForm input[name='username']").val();
-            var password = $("#editProfileForm input[name='password']").val();
-
-            var fullName = $("#editProfileForm input[name='fullName']").val();
-            var email = $("#editProfileForm input[name='email']").val();
-
-            var newUser = "{username:\"" + username
-                + "\",password:\"" + password
-                + "\", fullName:\"" + fullName + "\", email:\"" + email + "\"}";
-
-            $.ajax({
-                type: "POST",
-                url: "/api/User/update",
-                contentType: "application/json",
-                data: newUser
-            }).success(function () {
-                alert("Successfully updated.");
-                $.magnificPopup.close();
-
-                $("#editProfileForm input[name='username']").val("");
-                $("#editProfileForm input[name='password']").val("");
-                $("#editProfileForm input[name='fullName']").val("");
-                $("#editProfileForm input[name='email']").val("");
-                user.username = username;
-                user.password = password;
-                user.email = email;
-                user.fullName = fullName;
-
-            }).fail(function () {
-                alert("Error connecting to server!");
-            });
-        });
-
-        editProfile = function () {
-            $("#editProfileForm input[name='username']").val(user.username);
-            $("#editProfileForm input[name='password']").val(user.password);
-            $("#editProfileForm input[name='fullName']").val(user.fullName);
-            $("#editProfileForm input[name='email']").val(user.email);
-        }
-
-        //ADMIN
-
-        /////////////////////////////users 
-
-
-        var renderUsers = function (data) {
-
-            var templateData = [];
-
-            var rowLength = 4;
-            var currentIndex = 0;
-
-            while (currentIndex <= users.length - 1) {
-                templateData.push(users.slice(currentIndex, currentIndex + rowLength));
-                currentIndex += rowLength;
-            }
-
-            var tmpData = {
-                users: data
-            };
-
-            $("#renderUsers").html(usersTemplate(tmpData));
-        }
-
-        usersList = function () {
-            if (user != null && user.admin == true) {
-                var source = $("#usersTemplate").html();
-                usersTemplate = Handlebars.compile(source);
-
-                $.ajax({
-                    async: true,
-                    type: "GET",
-                    url: "/api/User/getAll",
-                })
-                    .success(function (data) {
-                        var users = data;
-                        renderUsers(users);
-                    })
-                    .fail(function () {
-                        alert("Error connecting to server.");
-                    });
-            }
-            else return;
-        }
-
-        function deleteUser(userToDelete) {
-            $.getJSON("/api/User/delete/" + userToDelete).done(function () {
-                alert("Successfully deleted user.");
-            })
-                .fail(function () {
-                    alert("Error connecting to server.");
-                });
-        }
-
-        /////////////////////////////coffees
-
-        coffeesList = function (tags) {
-            var source = $("#coffeesTemplate").html();
-            coffeesTemplate = Handlebars.compile(source);
-            if (tags != undefined && tags.length == 0) {
-
-                $.ajax({
-                    async: true,
-                    type: "GET",
-                    url: "/api/coffee/getAll",
-                    contentType: "application/json",
-                    data: tags
-                })
-                    .success(function (data) {
-                        var coffees = data;
-                        renderCoffees(coffees);
-                    })
-                    .fail(function () {
-                        alert("Error connecting to server.");
-                    });
-            }
-            else {
-                $.ajax({
-                    async: true,
-                    type: "POST",
-                    url: "/api/coffee/getTaggedCoffees",
-                    contentType: "application/json",
-                    data: JSON.stringify({ "tags": tags })
-                })
-                    .success(function (data) {
-                        var coffees = data;
-                        renderCoffees(coffees);
-                    })
-                    .fail(function () {
-                        alert("Error connecting to server.");
-                    });
-
-            }
-        }
-
-        var renderCoffees = function (data) {
-            var admin;
-
-            if (user == null)
-                context = {
-                    admin: false,
-                    coffees: data
-                };
-            else
-                context = {
-                    admin: user.admin,
-                    coffees: data
-                };
-
-            $("#renderCoffees").html(coffeesTemplate(context));
-        }
-
-        $("#addCoffeeBtn").click(function () {
-            window.clearInterval(refreshCoffeesId);
-
-            var imageName = $("#addCoffeeForm input[name='imageName']").val();
-            if (imageName != "")
-                uploadImage("coffee");
-            var type = $("#addCoffeeForm input[name='type']").val();
-            var small = $("#addCoffeeForm input[name='small']").val();
-            var medium = $("#addCoffeeForm input[name='medium']").val();
-            var large = $("#addCoffeeForm input[name='large']").val();
-
-            if (imageName == "" || type == "" || small == "" || medium == "" || large == "") {
-                alert("You must fill all field!");
-                return;
-            }
-
-            var newCoffee = "{image:\"" + imageName
-                + "\",type:\"" + type
-                + "\",  small:\"" + small + "\", medium:\"" + medium + "\", large:\"" + large + "\"}";
-
-            $.ajax({
-                type: "POST",
-                url: "/api/Coffee/add",
-                contentType: "application/json",
-                data: newCoffee
-            }).success(function (data) {
-                var res;
-                if (data == true) {
-                    alert("Successfully added new coffee.");
-                    refreshCoffeesId = window.setInterval('coffeesList(tags)', 1000);
-
-                    $.magnificPopup.close();
-                    $("#addCoffeeForm input[name='image']").val("");
-                    $("#addCoffeeForm input[name='imageName']").val("");
-                    $("#addCoffeeForm input[name='type']").val("");
-                    $("#addCoffeeForm input[name='small']").val("");
-                    $("#addCoffeeForm input[name='medium']").val("");
-                    $("#addCoffeeForm input[name='large']").val("");
-                }
-                else
-                    res = "Coffee already exists!";
-
-                alert(res);
-
-            })
-                .fail(function () {
-                    alert("Error connecting to the server.");
-                });
-
-        });
-
-        function uploadImage(imageType) {
-            var file = $(".image." + imageType).get(0).files;
-            if (file.length == 1) {
-                var data = new FormData();
-                data.append("image", file[0]);
-                $.ajax({
-                    type: "POST",
-                    url: "api/coffee/uploadImage/" + imageType,
-                    contentType: false,
-                    processData: false,
-                    data: data,
-                    success: function (message) {
-                        alert(message);
-                    },
-                    error: function () {
-                        alert("Error connecting to server.");
-                    }
-                });
-            } else {
-                return;
-            }
-        };
-
-        $("input.image").change(function () { //image prilikom dodavanja nove kafe
-            var file = $(this)[0].files[0];
-            if (file != null)
-                $("#addCoffeeForm input[name='imageName']").val(file.name);
-            else
-                $("#addCoffeeForm input[name='imageName']").val("");
-        });
-
-        function changeImageName() { //ovo ne radi :)
-            var coffeeName = $("input.newImage").data("oldName");
-            var file = $(this)[0].files[0];
-            if (file != null)
-                $("#newImageName" + oldName).val(file.name);
-            else
-                $("#newImageName" + oldName).val("");
-        }
-
-        $(document).on('change', 'input.newImage', function () {
-            changeImageName();
-            //alert('Change Happened');
-        });
-
-        function deleteCoffee(coffeeToDelete) {
-            $.getJSON("/api/Coffee/delete/" + coffeeToDelete).done(function () {
-                alert("Successfully deleted coffee.");
-                renderCoffees();
-            })
-                .fail(function () {
-                    alert("Error connecting to server.");
-                });
-        }
-
-        function editCoffee(oldName) {
-            window.clearInterval(refreshCoffeesId);
-            $("#saveChanges" + oldName).css("display", 'inline');
-            $("#newType" + oldName).removeAttr('disabled');
-            $("#smallSize" + oldName).removeAttr('disabled');
-            $("#mediumSize" + oldName).removeAttr('disabled');
-            $("#largeSize" + oldName).removeAttr('disabled');
-            $("#changeCoffeeImageDiv" + oldName).css("display", 'inline');
-        }
-
-        function updateCoffee(oldName) {
-            var newImageName = $("#newImageName" + oldName).val();
-            if (newImageName != "")
-                uploadImage("coffee");
-            var type = $("#newType" + oldName).val();
-            var small = $("#smallSize" + oldName).val();
-            var medium = $("#mediumSize" + oldName).val();
-            var large = $("#largeSize" + oldName).val();
-
-            var newCoffee = "{image:\"" + newImageName
-                + "\",type:\"" + type
-                + "\",  small:\"" + small + "\", medium:\"" + medium + "\", large:\"" + large + "\"}";
-
-            $.ajax({
-                type: "POST",
-                url: "/api/Coffee/update/" + oldName,
-                contentType: "application/json",
-                data: newCoffee
-            }).success(function () {
-                alert("Successfully updated.");
-                refreshCoffeesId = setInterval('coffeesList(tags)', 1000);
-                $("#saveChanges" + oldName).css("display", 'none');
-                $("#changeCoffeeImageDiv" + oldName).css("display", 'none');
-
-
-            }).fail(function () {
-                alert("Error connecting to server!");
-            });
-        }
-
-
-        ////////////////////////////////extras
-
-        function extrasList() {
-            var source = $("#extrasTemplate").html();
-            extrasTemplate = Handlebars.compile(source);
-
-            $.ajax({
-                async: true,
-                type: "GET",
-                url: "/api/extra/getAll",
-            })
-                .success(function (data) {
-                    var extras = data;
-                    renderExtras(extras);
-                })
-                .fail(function () {
-                    alert("Error connecting to server.");
-                });
-        }
-
-
-        var renderExtras = function (data) {
-            var admin;
-
-            if (user == null)
-                context = {
-                    admin: false,
-                    extras: data
-                };
-            else
-                context = {
-                    admin: user.admin,
-                    extras: data
-                };
-
-            $("#renderExtras").html(extrasTemplate(context));
-        }
-
-        $("#addExtraBtn").click(function () {
-            window.clearInterval(refreshCoffeesId);
-
-            var imageName = $("#addExtraForm input[name='imageName']").val();
-            if (imageName != "")
-                uploadImage("extra");
-            var type = $("#addExtraForm input[name='type']").val();
-            var price = $("#addExtraForm input[name='price']").val();
-
-            if (imageName == "" || type == "" || price == "") {
-                alert("You must fill all field!");
-                return;
-            }
-
-            var newExtra = "{image:\"" + imageName
-                + "\",type:\"" + type
-                + "\", price:\"" + price + "\"}";
-
-            $.ajax({
-                type: "POST",
-                url: "/api/Extra/add",
-                contentType: "application/json",
-                data: newExtra
-            }).success(function (data) {
-                var res;
-                if (data == true) {
-                    alert("Successfully added new extra.");
-                    refreshExtrasId = window.setInterval('extrasList()', 1000);
-
-                    $.magnificPopup.close();
-                    $("#addExtraForm input[name='image']").val("");
-                    $("#addExtraForm input[name='imageName']").val("");
-                    $("#addExtraForm input[name='type']").val("");
-                    $("#addExtraForm input[name='price']").val("");
-                }
-                else
-                    res = "Extra already exists!";
-
-                alert(res);
-            })
-                .fail(function () {
-                    alert("Error connecting to the server.");
-                });
-
-        });
-
-        $("#addExtraForm input[name='image']").change(function () {
-            var file = $("#addExtraForm input[name='image']")[0].files[0];
-            if (file != null)
-                $("#addExtraForm input[name='imageName']").val(file.name);
-            else
-                $("#addExtraForm input[name='imageName']").val("");
-        });
-
-        function editExtra(oldName) {
-            window.clearInterval(refreshExtrasId);
-            $("#saveChanges" + oldName).css("display", 'inline');
-            $("#newType" + oldName).removeAttr('disabled');
-            $("#newPrice" + oldName).removeAttr('disabled');
-            $("#changeExtraImageDiv" + oldName).css("display", 'inline');
-        }
-
-        function updateExtra(oldName) {
-            var newImageName = $("#newImageName" + oldName).val();
-            if (newImageName != "")
-                uploadImage("extra");
-            var type = $("#newType" + oldName).val();
-            var price = $("#newPrice" + oldName).val();
-
-            var newExtra = "{image:\"" + newImageName
-                + "\",type:\"" + type
-                + "\", price:\"" + price + "\"}";
-
-            $.ajax({
-                type: "POST",
-                url: "/api/Extra/update/" + oldName,
-                contentType: "application/json",
-                data: newExtra
-            }).success(function () {
-                alert("Successfully updated.");
-                refreshExtrasId = setInterval('extrasList()', 1000);
-                $("#saveChanges" + oldName).css("display", 'none');
-
-            }).fail(function () {
-                alert("Error connecting to server!");
-            });
-        }
-
-        function deleteExtra(extraToDelete) {
-            $.getJSON("/api/Extra/delete/" + extraToDelete).done(function () {
-                alert("Successfully deleted extra.");
-                renderExtras();
-            })
-                .fail(function () {
-                    alert("Error connecting to server.");
-                });
-        }
-
-        ////////////////////////////////order
-
-
-        function goToExtras(coffeeType) {
-            coffee = coffeeType;
-            var priceSize = parseInt($("input[name='size" + coffeeType + "']:checked").val());
-
-            price = price + priceSize;
-
-            $("#orderBtn").css('display', 'block');
-        }
-
-        function order() {
-            if (user == null) {
-                alert("You must login first!");
-                return;
-            }
-            if (coffee == null) {
-
-                alert("You must choose coffee first!");
-                return;
-            }
-            $("input[name='extra']:checked").each(function () {
-                price = price + $(this).data('price');
-                extras.push($(this).val());
-            });
-
-            var newOrder = "{user:\"" + user.username
-                + "\",coffee:\"" + coffee
-                + "\",price:\"" + price
-                + "\", extras:\"" + extras + "\"}";
-
-            $.ajax({
-                type: "POST",
-                url: "/api/Order/add",
-                contentType: "application/json",
-                data: newOrder
-            }).success(function () {
-                alert("You have successfully ordered coffee.");
-                extras = new Array;
-                price = 0;
-                coffee = null;
-            }).fail(function () {
-                alert("Error connecting to server!");
-            });
-        }
-
-        function ordersList() {
-            if (user == null)
-                return;
-            if (user.admin == true) {
-                var source = $("#ordersTemplate").html();
-                ordersTemplate = Handlebars.compile(source);
-
-                $.ajax({
-                    async: true,
-                    type: "GET",
-                    url: "/api/order/getAll",
-                })
-                    .success(function (data) {
-                        var orders = data;
-                        renderOrders(orders, true);
-                    })
-                    .fail(function () {
-                        alert("Error connecting to server.");
-                    });
-            }
-            else {
-                var source = $("#ordersTemplate").html();
-                ordersTemplate = Handlebars.compile(source);
-
-                $.ajax({
-                    async: true,
-                    type: "GET",
-                    url: "/api/order/getUserOrders/" + user.username,
-                })
-                    .success(function (data) {
-                        var orders = data;
-                        renderOrders(orders, false);
-                    })
-                    .fail(function () {
-                        alert("Error connecting to server.");
-                    });
-            };
-
-        }
-
-        var renderOrders = function (data, isAdmin) {
-
-            var templateData = [];
-
-            var rowLength = 4;
-            var currentIndex = 0;
-
-            while (currentIndex <= orders.length - 1) {
-                templateData.push(orders.slice(currentIndex, currentIndex + rowLength));
-                currentIndex += rowLength;
-            }
-
-            var tmpData = {
-                orders: data,
-                admin: isAdmin
-            };
-
-            $("#renderOrders").html(ordersTemplate(tmpData));
-        }
-
-        function deleteOrder(orderToDelete) {
-            $.getJSON("/api/Order/delete/" + orderToDelete).done(function () {
-                alert("Successfully deleted order.");
-            })
-                .fail(function () {
-                    alert("Error connecting to server.");
-                });
-        }
-
-        //tags
-
-        function addNewTag(coffeeType) {
-            var tag = $("input[name='tag'][data-coffee='" + coffeeType + "']").val();
-            var toSend = "{newTag:\"" + tag + "\"}";
-
-            $.ajax(
-                {
-                    type: "POST",
-                    url: "/api/Coffee/addTag/" + coffeeType,
-                    contentType: "application/json",
-                    data: toSend,
-                }).success(function () {
-                    coffeesList(tags);
-                    renderTags();
-                });
-        }
-
-        function deleteTag(coffee, tag) {
-            var toSend = "{tagToDel:\"" + tag + "\"}";
-
-            $.ajax(
-                {
-                    type: "POST",
-                    url: "/api/Coffee/deleteTag/" + coffee,
-                    contentType: "application/json",
-                    data: toSend,
-                }).success(function () {
-                    coffeesList(tags);
-                    renderTags();
-                });
-        }
-
-        function concatTag(tag, el) {
-
-            $(el).toggleClass('activeTag');
-
-            if ($.inArray(tag, tags) != -1) {
-                tags.splice($.inArray(tag, tags), 1);
-            }
-            else
-                tags.push(tag);
-
-            coffeesList(tags);
-        }
-
-        function renderTags() {
-            var source = $("#tagsTemplate").html();
-            tagsTemplate = Handlebars.compile(source);
-
-            $.ajax(
-                {
-                    async: true,
-                    type: "GET",
-                    url: "/api/coffee/getTags",
-                }).success(function (data) {
-                    var context = { tags: data };
-                    $("#renderTags").html(tagsTemplate(context));
-                });
-        }
-    };
-
     function logIn() {
         var username = $("#loginForm input[name='username']").val();
         var password = $("#loginForm input[name='password']").val();
 
         if (username == "" || password == "") {
-            alert("You must fill all field!");
+            //alert("You must fill all fields!");
+            var message = "You must fill all fields!";
+            var title = "Alert";
+            var buttonName = "OK";
+            navigator.notification.alert(message, alertCallback, title, buttonName);
+            function alertCallback() {
+                console.log("Alert is Dismissed!");
+            }
             return;
         }
 
         if (storage.getItem(username) == null)
-            alert("Invalid username or password.");
+        {
+            var message = "Invalid username or password.";
+            var title = "Alert";
+            var buttonName = "OK";
+            navigator.notification.alert(message, alertCallback, title, buttonName);
+            function alertCallback() {
+                console.log("Alert is Dismissed!");
+            }
+        }
+            //alert("Invalid username or password.");
         else {
             var message = "Successfully logged in.";
             var title = "Info";
@@ -763,8 +480,6 @@ var refreshTagsId;
 
     }
 
-
-
     function logout(el) {
 
         //$("#orderBtn").css('display', 'none');
@@ -780,20 +495,320 @@ var refreshTagsId;
         //}
 
         //$("a[href='#editProfileForm']").css("display", 'none');
-        user = null;
-        Cookies.set('user', user);
+        Cookies.set('user', null);
+        Cookies.set('usernameOrder', null);
+        Cookies.set('usernameCoffee', null);
 
         //coffeesList(tags);
         //extrasList();
         //clearInterval(refreshCoffeesId);
         //clearInterval(refreshExtrasId);
-        alert("You are logged out.");
+        //alert("You are logged out.");
+        var message = "You are logged out.";
+        var title = "Info";
+        var buttonName = "OK";
+        navigator.notification.alert(message, alertCallback, title, buttonName);
+        function alertCallback() {
+            console.log("Alert is Dismissed!");
+        }
         $.magnificPopup.close();
 
         $(el).html("Login").attr("href", "#loginForm")
             .addClass("popup-with-form")
             .removeClass("logoutClass");
 
+    }
+
+    //coffeeDetails
+
+    function getSmallPriceByName(name) {
+        var price;
+
+        switch (name) {
+            case "espresso":
+                price = "1.5";
+                break;
+            case "cappuccino":
+                price = "1.7";
+                break;
+            case "macchiato":
+                price = "1.7";
+                break;
+            case "caffee latte":
+                price = "1.9";
+                break;
+            case "americano":
+                price = "1.8";
+                break;
+            case "irish coffee":
+                price = "2";
+                break;
+            case "mocha":
+                price = "2";
+                break;
+            default:
+                price = "0";
+        }
+
+        return price;
+    }
+
+    function getLargePriceByName(name) {
+        var price;
+
+        switch (name) {
+            case "espresso":
+                price = "2";
+                break;
+            case "cappuccino":
+                price = "2.2";
+                break;
+            case "macchiato":
+                price = "2.2";
+                break;
+            case "caffee latte":
+                price = "2.4";
+                break;
+            case "americano":
+                price = "2.3";
+                break;
+            case "irish coffee":
+                price = "2.5";
+                break;
+            case "mocha":
+                price = "2.5";
+                break;
+            default:
+                price = "0";
+        }
+
+        return price;
+    }
+
+    function getExtrasPriceByName(name) {
+        var price;
+
+        switch (name) {
+            case "sugar":
+                price = "0.2";
+                break;
+            case "cinnamon":
+                price = "0.3";
+                break;
+            case "rum":
+                price = "0.4";
+                break;
+            case "vanilla":
+                price = "0.3";
+                break;
+            case "icecream":
+                price = "0.4";
+                break;
+            default:
+                price = "0";
+        }
+
+        return price;
+    }
+
+    function handleClick(id) {
+        var cb = document.getElementById(id);
+        console.log("Clicked, value = " + cb.checked);
+        
+    }
+
+    function calculatePrice() {
+        price = 0;
+        var radios = document.getElementsByName('size');
+
+        if (radios[0].checked) {
+            price += Number(getSmallPriceByName(coffee));
+            size = "small";
+        }
+        else {
+            price += Number(getLargePriceByName(coffee));
+            size = "large";
+        }
+        getExtrasPrice();
+    }
+
+    function getExtrasPrice() {
+
+        var chkArray = [];
+        var checked;
+        /* look for all checkboes that have a class 'chk' attached to it and check if it was checked */
+        $(".chk:checked").each(function () {
+            checked = $(this).val();
+            chkArray.push(checked);
+            price += Number(getExtrasPriceByName(checked));
+        });
+
+        extras = chkArray.join(',');;
+        console.log("You have selected " + extras);
+    }
+
+    function makePhoneCall() {
+
+        var number = "+381648535774";
+        window.plugins.CallNumber.callNumber(onSuccess, onError, number, false);
+        function onSuccess(result) {
+            console.log("Success:" + result);
+        }
+
+        function onError(result) {
+            console.log("Error:" + result);
+        }
+    }
+
+    //function audioCapture() {
+    //    var src = "myrecording.mp3";
+    //    var mediaRec = new Media(src, onSuccess, onError);
+
+    //    // Record audio
+    //    mediaRec.startRecord();
+
+    //    // Stop recording after 10 sec
+    //    var recTime = 0;
+    //    var recInterval = setInterval(function () {
+    //        recTime = recTime + 1;
+    //        setAudioPosition(recTime + " sec");
+    //        if (recTime >= 10) {
+    //            clearInterval(recInterval);
+    //            mediaRec.stopRecord();
+    //        }
+    //    }, 1000);
+    //}
+    //function onSuccess() {
+    //   alert("recordAudio():Audio Success");
+    //}
+
+    //// onError Callback 
+    ////
+    //function onError(error) {
+    //    alert('code: ' + error.code + '\n' +
+    //        'message: ' + error.message + '\n');
+    //}
+
+    function audioCapture()
+    {
+        var options = {
+            limit: 1,
+            duration: 10
+        };
+        navigator.device.capture.captureAudio(onSuccess, onError, options);
+
+        function onSuccess(mediaFiles) {
+            var i, path, len;
+            for (i = 0, len = mediaFiles.length; i < len; i += 1) {
+                myMedia = mediaFiles[i].fullPath;
+                uploadFile(myMedia);
+            }
+        }
+
+        function onError(error) {
+            navigator.notification.alert('Error code: ' + error.code, null, 'Capture Error');
+        }
+    }
+
+    function uploadFile(myMedia) {
+        var fileURL = myMedia;
+        var uri = encodeURI("http://posttestserver.com/post.php");
+        var options = new FileUploadOptions();
+        options.fileKey = "file";
+        options.fileName = fileURL.substr(fileURL.lastIndexOf('/') + 1);
+        options.mimeType = "text/plain";
+
+        var headers = { 'headerParam': 'headerValue' };
+        options.headers = headers;
+        var ft = new FileTransfer();
+        ft.upload(fileURL, uri, onSuccess, onError, options);
+
+        function onSuccess(r) {
+            var message = "Your audio message is successfully uploaded.";
+            var title = "Info";
+            var buttonName = "OK";
+            navigator.notification.alert(message, alertCallback, title, buttonName);
+            function alertCallback() {
+                console.log("Alert is Dismissed!");
+            }
+            console.log("Code = " + r.responseCode);
+            console.log("Response = " + r.response);
+            console.log("Sent = " + r.bytesSent);
+        }
+
+        function onError(error) {
+            alert("An error has occurred. Please try again later.");
+            console.log("upload error source " + error.source);
+            console.log("upload error target " + error.target);
+        }
+
+    }
+
+    function playVideo()
+    {
+        YoutubeVideoPlayer.openVideo('RElgiE8_Y0Y', function (result)
+            { console.log('YoutubeVideoPlayer result = ' + result); });
+    }
+
+    function cameraTakePicture() {
+        navigator.camera.getPicture(onSuccess, onFail, {
+            quality: 10,
+            destinationType: Camera.DestinationType.FILE_URI
+        });
+
+        function onSuccess(imageURI) {
+            //alert(imageURI);
+            //window.resolveLocalFileSystemURL(imageURI, function success(fileEntry) {
+
+            //    // Do something with the FileEntry object, like write to it, upload it, etc.
+            //    // writeFile(fileEntry, imgUri);
+            //    alert("got file: " + fileEntry);
+            //    // displayFileData(fileEntry.nativeURL, "Native URL");
+
+            //}, function () {
+            //    // If don't get the FileEntry (which may happen when testing
+            //    // on some emulators), copy to a new FileEntry.
+            //    alert("Didn't make it.");
+            //});
+            uploadPhoto(imageURI);
+        }
+
+        function onFail(message) {
+            alert('Failed because: ' + message);
+        }
+    }
+
+    function uploadPhoto(image)
+    {
+            var fileURI = image;
+            var uri = encodeURI("http://posttestserver.com/post.php");
+            var options = new FileUploadOptions();
+            options.fileKey = "file";
+            options.fileName = fileURI.substr(fileURI.lastIndexOf('/') + 1);
+            options.mimeType = "image/jpeg";
+
+            var headers = { 'headerParam': 'headerValue' };
+            options.headers = headers;
+            var ft = new FileTransfer();
+            ft.upload(fileURI, uri, onSuccess, onError, options);
+
+            function onSuccess(r) {
+                var message = "Your photo is successfully uploaded.";
+                var title = "Info";
+                var buttonName = "OK";
+                navigator.notification.alert(message, alertCallback, title, buttonName);
+                function alertCallback() {
+                    console.log("Alert is Dismissed!");
+                }
+                console.log("Code = " + r.responseCode);
+                console.log("Response = " + r.response);
+                console.log("Sent = " + r.bytesSent);
+            }
+            function onError(error) {
+                alert("An error has occurred. Please try again later.");
+                console.log("upload error source " + error.source);
+                console.log("upload error target " + error.target);
+            }
     }
 
     function onPause() {
